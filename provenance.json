@@ -15,7 +15,7 @@
         "https://github.com/RookieEnough/De-Vanced"
       ],
       "license": "GPL-3.0-only",
-      "changes": "HushMessenger's Spoof package version moved to Facebook: the same versionCode option and the same manifest refusals (no versionCodeMajor, the manifest's code has to be the one the patcher read, never lower), checked by release name so the Android 9 build passes. The self-read rewrite is HushMessenger's, with the count pinned only for the arm64 build it was measured on (82 reads), Hushfacebook's own extension classes answered as well, and the original and raised codes written into OwnVersion's stubs. OwnVersion tells Facebook's own PackageInfo apart by the raised code and reads the raw code through reflection, and the patch marks itself in SettingsStatus."
+      "changes": "HushMessenger's Spoof package version moved to Facebook: the same versionCode option and the same manifest refusals (no versionCodeMajor, the manifest's code has to be the one the patcher read, never lower), checked by release name so the Android 9 build passes. The self-read rewrite is HushMessenger's, with the count pinned only for the arm64 build it was measured on (69 reads), Hushfacebook's own extension classes answered as well, and the original and raised codes written into OwnVersion's stubs. OwnVersion tells Facebook's own PackageInfo apart by the raised code and reads the raw code through reflection, and the patch marks itself in SettingsStatus."
     },
     {
       "paths": ["patches/src/main/kotlin/app/morphe/util/BundleIdentity.kt"],

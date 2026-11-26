@@ -198,8 +198,8 @@ class SpoofSelfReadsTest {
         val methods = listOf(ownField(), ownGetter(), wrapper(), gms())
         assertEquals(setOf(methods[0].id(), methods[1].id(), methods[3].id()), planSelfVersionReads(methods, expected = 3))
         val before = methods.map { it.body() }
-        val failure = assertThrows(PatchException::class.java) { planSelfVersionReads(methods, expected = 82) }
-        assertTrue(failure.message, failure.message.orEmpty().contains("found 3 version code reads, expected 82"))
+        val failure = assertThrows(PatchException::class.java) { planSelfVersionReads(methods, expected = 69) }
+        assertTrue(failure.message, failure.message.orEmpty().contains("found 3 version code reads, expected 69"))
         assertEquals(before, methods.map { it.body() })
 
         // Unpinned, any count passes, but none at all is a build this patch can't recognise.
@@ -219,7 +219,7 @@ class SpoofSelfReadsTest {
     /** Only the build that was measured has a pin; the others are checked for shape alone. */
     @Test
     fun `only the measured arm64 build is pinned`() {
-        assertEquals(82, expectedSelfVersionReads(AppCompatibilities.FACEBOOK_TARGET_VERSION_CODE))
+        assertEquals(69, expectedSelfVersionReads(AppCompatibilities.FACEBOOK_TARGET_VERSION_CODE))
         assertEquals(null, expectedSelfVersionReads(AppCompatibilities.FACEBOOK_V7A_TARGET_VERSION_CODE))
         assertEquals(setOf(AppCompatibilities.FACEBOOK_TARGET_VERSION_CODE), SELF_VERSION_READS.keys)
     }

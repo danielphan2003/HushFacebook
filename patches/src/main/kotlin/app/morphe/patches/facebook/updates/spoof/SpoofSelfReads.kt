@@ -43,17 +43,18 @@ private val LEFT_ALONE = setOf(OWN_VERSION, "$EXTENSION_PACKAGE/updates/DisableP
 
 /**
  * Every PackageInfo version read outside Morphe's classes in Facebook 588.0.0.42.55's arm64 build
- * (version code 707615136), measured with dexlib2 from the classes the patcher sees: 82 in 76
- * methods, 59 field reads and 23 getter calls, one copy per class type (13 more sit in second
- * copies of WebView and other classes another dex repeats, which the patcher's class map keeps
- * once). Most read another app (Google Play services, the Play Store, WebView) and keep what
- * Android reports; the rest are Facebook's own, AppComponentManager's check, Profilo's trace end
- * and Play Billing among them. A different count means the build changed, and nothing is rewritten.
+ * (version code 707615136): 69 in 66 methods, 51 field reads and 18 getter calls. Measured with
+ * dexlib2 on the classes*.dex the patcher loads, from the published Hushfacebook 0.24.0 build of
+ * that original (Helium's standalone WebView dex in assets and lib holds more, which the patcher
+ * never reads). Most read another app (Google Play services, the Play Store, WebView) and keep
+ * what Android reports; the rest are Facebook's own, AppComponentManager's check, Profilo's trace
+ * end and Play Billing among them. A different count means the build changed, and nothing is
+ * rewritten.
  *
  * The armv7 build (707615135) and the Android 9 build are separate rebuilds that weren't measured,
  * so they have no pin: every read is still checked for a shape this patch rewrites before any is.
  */
-internal val SELF_VERSION_READS: Map<Int, Int> = mapOf(AppCompatibilities.FACEBOOK_TARGET_VERSION_CODE to 82)
+internal val SELF_VERSION_READS: Map<Int, Int> = mapOf(AppCompatibilities.FACEBOOK_TARGET_VERSION_CODE to 69)
 
 /** The pinned count for the build with [versionCode], or null where none was measured. */
 internal fun expectedSelfVersionReads(versionCode: Int): Int? = SELF_VERSION_READS[versionCode]
