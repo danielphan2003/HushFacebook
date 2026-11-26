@@ -75,6 +75,9 @@ private fun Instruction.isVersionRead() = reference().let { it == VERSION_FIELD 
 
 private fun Method.versionReads() = code().count { it.isVersionRead() }
 
+/** Whether [this] reads a PackageInfo version code at all. */
+internal fun Method.readsVersionCode() = implementation?.instructions?.any { it.isVersionRead() } == true
+
 /** Whether [this] is one of Facebook's own classes rather than one a Morphe extension merged in. */
 private fun Method.isFacebooks() = !definingClass.startsWith(MORPHE_CLASSES)
 

@@ -123,9 +123,10 @@ val spoofPackageVersionPatch = patch(
             if (ownVersion.none(::isOriginalVersionCodeStub) || ownVersion.none(::isSpoofedVersionCodeStub)) {
                 throw PatchException("$SPOOF_VERSION_PATCH: $OWN_VERSION has no originalVersionCode()I and spoofedVersionCode()I")
             }
-            val methods = mutableListOf<Method>()
-            classDefForEach { methods.addAll(it.methods) }
-            targets = planSelfVersionReads(methods, expectedSelfVersionReads(code))
+            // Only the methods that read a version code are kept, not every method of every class.
+            val readers = mutableListOf<Method>()
+            classDefForEach { classDef -> classDef.methods.filterTo(readers) { it.readsVersionCode() } }
+            targets = planSelfVersionReads(readers, expectedSelfVersionReads(code))
         }
         onResources { document("AndroidManifest.xml").use { it.spoofVersionCode(real, spoofed) } }
         onBytecode {
