@@ -1,0 +1,62 @@
+# Builds the patch bundle on a tag and attaches it to a release, so patchbay
+# (Daniel's patched-app pipeline) can pin this fork's bundle by URL and SHA-256.
+# Tags are vX.Y.Z-dp.N on the patchbay branch. Adapted from the HushMessenger
+# fork's workflow.
+name: Bundle
+
+on:
+  push:
+    tags: ["v*-dp.*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: "21"
+      # No gradle/actions/setup-gradle: its init scripts add plugins to the build
+      # classpath that gradle/verification-metadata.xml doesn't list, and
+      # dependency verification fails on them.
+      # The Morphe settings plugin resolves from GitHub Packages with these.
+      # gradlew is checked in without its executable bit, so bash runs it.
+      # Upstream's pre-push gate runs the same two test tasks. The fixture
+      # tests skip without HUSHFACEBOOK_FIXTURE_DIR (no stock APKs here).
+      - name: Test
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./gradlew :extensions:facebook:test :patches:test --no-daemon
+      # A separate run: :patches:test rewrites build/libs with the plain jar,
+      # and buildAndroid writes the release bundle to build/release.
+      - name: Build the bundle
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash ./gradlew :patches:buildAndroid --no-daemon
+      - name: Checksum
+        run: |
+          cd patches/build/release
+          ls -l
+          sha256sum *.mpp | tee SHA256SUMS.txt
+      - name: Release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" patches/build/release/*.mpp patches/build/release/SHA256SUMS.txt \
+            --repo "$GITHUB_REPOSITORY" --title "$GITHUB_REF_NAME" \
+            --notes "Built by this workflow from $GITHUB_SHA."
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        if: "!startsWith(github.ref, 'refs/tags/')"
+        with:
+          name: bundle
+          path: patches/build/release/
