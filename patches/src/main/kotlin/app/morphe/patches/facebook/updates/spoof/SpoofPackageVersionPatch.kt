@@ -119,7 +119,7 @@ val spoofPackageVersionPatch = patch(
         var targets = emptySet<String>()
         onBytecode {
             requireStatusMethod("spoofPackageVersion")
-            val ownVersion = classDefByOrNull(OWN_VERSION)?.methods.orEmpty()
+            val ownVersion = classDefByOrNull(OWN_VERSION)?.methods?.toList().orEmpty()
             if (ownVersion.none(::isOriginalVersionCodeStub) || ownVersion.none(::isSpoofedVersionCodeStub)) {
                 throw PatchException("$SPOOF_VERSION_PATCH: $OWN_VERSION has no originalVersionCode()I and spoofedVersionCode()I")
             }
