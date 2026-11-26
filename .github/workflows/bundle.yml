@@ -35,6 +35,15 @@ jobs:
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: bash ./gradlew :extensions:facebook:test :patches:test --no-daemon
+      # patches-list.json is generated, and the tests read the checked-in copy,
+      # so a stale one has to fail here rather than ship.
+      - name: Check the patch list is current
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bash ./gradlew :patches:generatePatchesList --no-daemon
+          git diff --exit-code patches-list.json
       # A separate run: :patches:test rewrites build/libs with the plain jar,
       # and buildAndroid writes the release bundle to build/release.
       - name: Build the bundle

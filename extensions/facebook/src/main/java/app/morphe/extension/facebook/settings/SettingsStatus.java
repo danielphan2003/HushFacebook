@@ -326,6 +326,10 @@ public final class SettingsStatus {
         return false;
     }
 
+    public static boolean spoofPackageVersion() {
+        return false;
+    }
+
     public static boolean gmsCore() {
         return false;
     }
