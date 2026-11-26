@@ -26,6 +26,9 @@ Morphe and ReVanced wrote, with Hushfacebook's changes marked in its header.
 Clone install under another package name is HushMessenger's too, whose
 package rename is adapted from rushiranpise's morphe-patches, with both
 credited and Hushfacebook's changes marked in its header.
+Spoof package version is HushMessenger's as well, which adapted it from
+rushiranpise's morphe-patches and De-Vanced, with all three credited and
+Hushfacebook's changes marked in its headers.
 The settings screen's header is HushGram's, with its changes marked the same way.
 The notices below are reproduced from those projects. Morphe requires its text to be
 carried in derivative works and shown to the person using the software, so it

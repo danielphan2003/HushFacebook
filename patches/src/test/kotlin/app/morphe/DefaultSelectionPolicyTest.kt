@@ -26,6 +26,8 @@ class DefaultSelectionPolicyTest {
             "everyone's Facebook as soon as it's patched in. Turning it off later needs no repatch (D#527).",
         "Disable Play Store updates" to "It raises the version code in the manifest, so a later build without it " +
             "can't install over it, and it doesn't work on a Root Mount install.",
+        "Spoof package version" to "It raises the version code in the manifest to a number you pick, so going back " +
+            "to a lower one means uninstalling first, and it doesn't work on a Root Mount install.",
         "GmsCore support" to "Facebook stops asking Google Play services and asks microG-RE instead, so on a phone " +
             "without microG-RE it gets no push notifications.",
         "Clone install under another package name" to "It installs the patched app as a second Facebook under " +

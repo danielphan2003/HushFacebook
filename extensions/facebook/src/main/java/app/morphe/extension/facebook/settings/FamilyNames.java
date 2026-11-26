@@ -147,6 +147,7 @@ public final class FamilyNames {
     public static final String TRANSLATED_START = "Start on x86 devices";
     public static final String INSTALL_BESIDE_META_APPS = "Install beside Meta's apps";
     public static final String PLAY_STORE_UPDATES = "Disable Play Store updates";
+    public static final String SPOOF_PACKAGE_VERSION = "Spoof package version";
     public static final String GMS_CORE = "GmsCore support";
     public static final String CLONE_INSTALL = "Clone install under another package name";
     public static final String OPEN_IN_FACEBOOK = "Open in Facebook from the share menu";

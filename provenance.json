@@ -2,6 +2,22 @@
   "note": "Where every shipped source file under patches/ and extensions/ came from. A rule naming a single file wins over the directory rule around it; otherwise each file matches exactly one rule. A ported rule names the upstream repository, the commit it was copied from, the repositories it came through and its licence, and every file's header names a repository of its rule, by URL. Every upstream named here must also appear in NOTICE. ProvenanceTest checks all of it. A Facebook-family repository named here also has to be allowed by sources/facebook-sources.json: one files are ported from has to be adopted there, with this rule's commit, and one a rule credits has to be adopted or a candidate. scripts/test-facebook-sources.ps1 checks that side.",
   "rules": [
     {
+      "paths": [
+        "extensions/facebook/src/main/java/app/morphe/extension/facebook/updates/OwnVersion.java",
+        "patches/src/main/kotlin/app/morphe/patches/facebook/updates/spoof/SpoofPackageVersionPatch.kt",
+        "patches/src/main/kotlin/app/morphe/patches/facebook/updates/spoof/SpoofSelfReads.kt"
+      ],
+      "origin": "ported",
+      "upstream": "https://github.com/SysAdminDoc/HushMessenger",
+      "commit": "858a6a24a7388c4a0d0e21c8a3b640de284dead1",
+      "via": [
+        "https://github.com/rushiranpise/morphe-patches",
+        "https://github.com/RookieEnough/De-Vanced"
+      ],
+      "license": "GPL-3.0-only",
+      "changes": "HushMessenger's Spoof package version moved to Facebook: the same versionCode option and the same manifest refusals (no versionCodeMajor, the manifest's code has to be the one the patcher read, never lower), checked by release name so the Android 9 build passes. The self-read rewrite is HushMessenger's, with the count pinned only for the arm64 build it was measured on (82 reads), Hushfacebook's own extension classes answered as well, and the original and raised codes written into OwnVersion's stubs. OwnVersion tells Facebook's own PackageInfo apart by the raised code and reads the raw code through reflection, and the patch marks itself in SettingsStatus."
+    },
+    {
       "paths": ["patches/src/main/kotlin/app/morphe/util/BundleIdentity.kt"],
       "origin": "original",
       "upstream": "https://github.com/SysAdminDoc/Hushfacebook",
